@@ -1,7 +1,7 @@
 **SORRY, nvmw is no longer maintained. If someone wants to keep maintained, contact me by [email](mailto://hakobera@gmail.com) or [twitter](https://twitter.com/hakobera).**
 
 Node Version Manager for Windows
-node在windows下的版本切换工具，原版不再维护，根据网上相关资料进行修改自用。
+## node在windows下的版本切换工具，原版不再维护，根据网上相关资料进行修改自用。
 ================================
 nvmw is a simple Node Version Manager for Windows.
 
