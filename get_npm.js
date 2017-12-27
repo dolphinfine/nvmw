@@ -3,9 +3,9 @@ var util = require('util'),
     path = require('path'),
     wget = require('./wget');
 
-var NPM_PKG_JSON_URL = 'https://raw.githubusercontent.com/%s/%s/deps/npm/package.json';
+var NPM_PKG_JSON_URL = 'http://npm.taobao.org/mirrors/node/index.json';
 // https://github.com/npm/npm/tags
-var NVMW_NPM_MIRROR = process.env.NVMW_NPM_MIRROR || 'https://github.com/npm/npm/archive';
+var NVMW_NPM_MIRROR = process.env.NVMW_NPM_MIRROR || 'http://npm.taobao.org/mirrors/npm';
 var BASE_URL = NVMW_NPM_MIRROR + '/v%s.zip';
 
 var targetDir = process.argv[2];
@@ -41,15 +41,22 @@ if (binType === 'iojs') {
     downloadNpmZip(npmVersion);
   });
 } else {
-  var pkgUri = util.format(NPM_PKG_JSON_URL, 'joyent/node',
-    binVersion === 'latest' ? 'master' : binVersion);
+  var pkgUri = NPM_PKG_JSON_URL;
   wget(pkgUri, function (filename, pkg) {
     if (filename === null) {
       return noNpmAndExit();
     }
-    downloadNpmZip(JSON.parse(pkg).version);
+    var _pkg = JSON.parse(pkg); 
+    for(var i = 0,n=_pkg.length;i<n;i++){ 
+      var obj = _pkg[i]; 
+      if(obj.version == binVersion){ 
+        downloadNpmZip(obj.npm); 
+      } 
+    }
   });
 }
+
+
 
 function noNpmAndExit() {
   console.error('%s %s does not include npm', binType, binVersion);
